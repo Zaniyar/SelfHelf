@@ -75,14 +75,24 @@
 }
 
 .canvas-container {
-  border-radius: 20px;
+/*  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;*/
   border: 3px solid #13c5c5;
   overflow: hidden;
   box-shadow: inset 0px 0px 0px 3px #035d6f;
   padding: 3px;
 }
+html {
+  background-color: cyan; /* Set the background color of the Android browser header to yellow */
+}
+
 #root {
   background: cyan;
+  border-radius: 20px;
+}
+
+button{
+  background: linear-gradient(to right, blue, cyan);
 }
 
 /* Form styles */
@@ -118,4 +128,40 @@ input, select, textarea {
 }
 .drawer{
   z-index: 99999;
+}
+
+h1.title {
+  color: white;
+  animation: rgb-split 2s ease-in-out infinite;
+}
+
+h1.title::before,
+h1.title::after {
+  content: 'SelfHelf';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: screen;
+}
+
+h1.title::before {
+  color: #ff0000;
+  animation: split-red 2s ease-in-out infinite;
+}
+
+h1.title::after {
+  color: #00ff00;
+  animation: split-green 2s ease-in-out infinite;
+}
+
+@keyframes split-red {
+  0%, 100% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+}
+
+@keyframes split-green {
+  0%, 100% { transform: translateX(4px); }
+  50% { transform: translateX(-4px); }
 }

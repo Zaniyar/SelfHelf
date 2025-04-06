@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { HealthGoals, HealthGoal } from './HealthGoals';
 import { Mars, Venus, User } from 'lucide-react';
+import { v4 as uuidv4 } from 'uuid';
 
 interface OnboardingProps {
   onComplete: (userData: UserData) => void;
@@ -33,7 +34,7 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
       onComplete({
         ...userData,
         healthGoals: [{
-          id: crypto.randomUUID(),
+          id: uuidv4(),
           text: mainGoal,
           status: 'not-started',
           createdAt: new Date(),

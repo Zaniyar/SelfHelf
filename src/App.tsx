@@ -174,7 +174,7 @@ const App = () => {
 
   return (
     <div className="canvas-container h-screen w-screen relative">
-      <h1 className="text-4xl font-bold text-center text-white borel-regular">SelfHelf</h1>
+      <h1 className="title text-4xl font-bold text-center text-white borel-regular">SelfHelf</h1>
       <h2 className="subtitle">feel good</h2>
       <Canvas camera={{ position: [0, 2, 2.5], fov: 50 }}>
         <OrbitControls 
