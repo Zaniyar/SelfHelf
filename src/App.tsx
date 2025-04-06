@@ -45,6 +45,9 @@ const App = () => {
   const [bgColor, setBgColor] = useState(() => 
     localStorage.getItem('bgColor') || '#222222'
   );
+  const [environment, setEnvironment] = useState(() => 
+    localStorage.getItem('environment') || 'zebra.jpg'
+  );
 
   // Update theme effect
   useEffect(() => {
@@ -156,6 +159,11 @@ const App = () => {
     localStorage.setItem('bgColor', newColor);
   };
 
+  const handleEnvironmentChange = (newEnv: string) => {
+    setEnvironment(newEnv);
+    localStorage.setItem('environment', newEnv);
+  };
+
   if (!isLoggedIn) {
     return <Login onLogin={handleLogin} />;
   }
@@ -170,14 +178,14 @@ const App = () => {
       <h2 className="subtitle">feel good</h2>
       <Canvas camera={{ position: [0, 2, 2.5], fov: 50 }}>
         <OrbitControls 
-          minDistance={2}
-          maxDistance={6}
+          minDistance={1}
+          maxDistance={4}
           target={[0, 1, 0]}
           enabled={true}
         />
         <ambientLight />
         <pointLight position={[10, 10, 10]} />
-        <Environment files={"fluid.jpg"} />
+        <Environment files={environment} />
         <HumanModel 
           onPointerDown={handleModelPointerDown}
           onPointerUp={handleModelPointerUp}
@@ -215,6 +223,8 @@ const App = () => {
         onThemeChange={handleThemeChange}
         bgColor={bgColor}
         onBgColorChange={handleBgColorChange}
+        currentEnv={environment}
+        onEnvChange={handleEnvironmentChange}
       />
       <OverlayMessage
         isVisible={isAddingMode}
