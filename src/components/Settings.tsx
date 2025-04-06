@@ -1,7 +1,8 @@
-import { Settings as SettingsIcon, Moon, Sun, Monitor, Palette, Mars, Venus, User, ImageIcon } from 'lucide-react';
+import { Settings as SettingsIcon, Moon, Sun, Monitor, Palette, Mars, Venus, User, ImageIcon, Sliders, UserCircle } from 'lucide-react';
 import { UserData } from './Onboarding';
 import { HealthGoals, HealthGoal } from './HealthGoals';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface SettingsDrawerProps {
   isOpen: boolean;
@@ -69,99 +70,141 @@ export function SettingsDrawer({
           </SheetTitle>
         </SheetHeader>
 
-        <div className="space-y-6 py-4">
-          {/* Theme Settings */}
-          <div className="mb-8">
-            <h3 className="text-lg font-semibold text-primary mb-4">Theme</h3>
-            <div className="grid grid-cols-3 gap-4">
-              <button
-                onClick={() => onThemeChange('light')}
-                className={`flex flex-col items-center p-4 rounded-lg border 
-                  ${currentTheme === 'light' 
-                    ? 'border-primary bg-primary/5' 
-                    : 'border-primary/20 hover:border-primary/50'}`}
-              >
-                <Sun className="h-6 w-6 text-primary mb-2" />
-                <span className="text-sm text-primary">Light</span>
-              </button>
-              <button
-                onClick={() => onThemeChange('dark')}
-                className={`flex flex-col items-center p-4 rounded-lg border ${
-                  currentTheme === 'dark' 
-                    ? 'border-[#00ffff] bg-[#001830]' 
-                    : 'border-[#00ffff]/20 hover:border-[#00ffff]/50'
-                }`}
-              >
-                <Moon className="h-6 w-6 text-[#00ffff] mb-2" />
-                <span className="text-sm text-[#00ffff]">Dark</span>
-              </button>
-              <button
-                onClick={() => onThemeChange('system')}
-                className={`flex flex-col items-center p-4 rounded-lg border ${
-                  currentTheme === 'system' 
-                    ? 'border-[#00ffff] bg-[#001830]' 
-                    : 'border-[#00ffff]/20 hover:border-[#00ffff]/50'
-                }`}
-              >
-                <Monitor className="h-6 w-6 text-[#00ffff] mb-2" />
-                <span className="text-sm text-[#00ffff]">System</span>
-              </button>
-            </div>
-          </div>
+        <Tabs defaultValue="ux" className="mt-6">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="ux" className="flex items-center gap-2">
+              <Sliders className="w-4 h-4" />
+              UX Settings
+            </TabsTrigger>
+            <TabsTrigger value="user" className="flex items-center gap-2">
+              <UserCircle className="w-4 h-4" />
+              User Profile
+            </TabsTrigger>
+          </TabsList>
 
-          {/* Background Color Settings */}
-          <div className="mb-8">
-            <div className="flex items-center gap-2 mb-4">
-              <Palette className="h-5 w-5 text-primary" />
-              <h3 className="text-lg font-semibold text-primary">Background Color</h3>
-            </div>
-            
-            <div className="grid grid-cols-3 gap-3">
-              {backgroundPresets.map((preset) => (
+          <TabsContent value="ux" className="space-y-6 py-4">
+            {/* Theme Settings */}
+            <div className="mb-8">
+              <h3 className="text-lg font-semibold text-primary mb-4">Theme</h3>
+              <div className="grid grid-cols-3 gap-4">
                 <button
-                  key={preset.name}
-                  onClick={() => onBgColorChange(preset.color)}
-                  className={`group relative flex flex-col items-center p-3 rounded-lg border
-                    ${preset.color === bgColor 
-                      ? 'border-primary' 
+                  onClick={() => onThemeChange('light')}
+                  className={`flex flex-col items-center p-4 rounded-lg border 
+                    ${currentTheme === 'light' 
+                      ? 'border-primary bg-primary/5' 
                       : 'border-primary/20 hover:border-primary/50'}`}
                 >
-                  <div 
-                    className="w-8 h-8 rounded-full mb-2 border border-primary/20"
-                    style={{ backgroundColor: preset.color }}
-                  />
-                  <span className="text-xs text-primary">{preset.name}</span>
+                  <Sun className="h-6 w-6 text-primary mb-2" />
+                  <span className="text-sm text-primary">Light</span>
                 </button>
-              ))}
-            </div>
-
-            {/* Custom color picker */}
-            <div className="mt-4">
-              <label className="block text-sm font-medium text-primary/70 mb-2">
-                Custom Color
-              </label>
-              <div className="flex gap-2">
-                <input
-                  type="color"
-                  value={bgColor}
-                  onChange={(e) => onBgColorChange(e.target.value)}
-                  className="h-10 w-20"
-                />
-                <input
-                  type="text"
-                  value={bgColor}
-                  onChange={(e) => onBgColorChange(e.target.value)}
-                  className="flex-1 px-3 py-1 rounded-md border border-primary/20 
-                    bg-background text-foreground text-sm
-                    focus:border-primary focus:ring focus:ring-primary/20"
-                  placeholder="#000000"
-                />
+                <button
+                  onClick={() => onThemeChange('dark')}
+                  className={`flex flex-col items-center p-4 rounded-lg border ${
+                    currentTheme === 'dark' 
+                      ? 'border-[#00ffff] bg-[#001830]' 
+                      : 'border-[#00ffff]/20 hover:border-[#00ffff]/50'
+                  }`}
+                >
+                  <Moon className="h-6 w-6 text-[#00ffff] mb-2" />
+                  <span className="text-sm text-[#00ffff]">Dark</span>
+                </button>
+                <button
+                  onClick={() => onThemeChange('system')}
+                  className={`flex flex-col items-center p-4 rounded-lg border ${
+                    currentTheme === 'system' 
+                      ? 'border-[#00ffff] bg-[#001830]' 
+                      : 'border-[#00ffff]/20 hover:border-[#00ffff]/50'
+                  }`}
+                >
+                  <Monitor className="h-6 w-6 text-[#00ffff] mb-2" />
+                  <span className="text-sm text-[#00ffff]">System</span>
+                </button>
               </div>
             </div>
-          </div>
 
-          {/* User Settings */}
-          <div className="space-y-6">
+            {/* Background Color Settings */}
+            <div className="mb-8">
+              <div className="flex items-center gap-2 mb-4">
+                <Palette className="h-5 w-5 text-primary" />
+                <h3 className="text-lg font-semibold text-primary">Background Color</h3>
+              </div>
+              
+              <div className="grid grid-cols-3 gap-3">
+                {backgroundPresets.map((preset) => (
+                  <button
+                    key={preset.name}
+                    onClick={() => onBgColorChange(preset.color)}
+                    className={`group relative flex flex-col items-center p-3 rounded-lg border
+                      ${preset.color === bgColor 
+                        ? 'border-primary' 
+                        : 'border-primary/20 hover:border-primary/50'}`}
+                  >
+                    <div 
+                      className="w-8 h-8 rounded-full mb-2 border border-primary/20"
+                      style={{ backgroundColor: preset.color }}
+                    />
+                    <span className="text-xs text-primary">{preset.name}</span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Custom color picker */}
+              <div className="mt-4">
+                <label className="block text-sm font-medium text-primary/70 mb-2">
+                  Custom Color
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={bgColor}
+                    onChange={(e) => onBgColorChange(e.target.value)}
+                    className="h-10 w-20"
+                  />
+                  <input
+                    type="text"
+                    value={bgColor}
+                    onChange={(e) => onBgColorChange(e.target.value)}
+                    className="flex-1 px-3 py-1 rounded-md border border-primary/20 
+                      bg-background text-foreground text-sm
+                      focus:border-primary focus:ring focus:ring-primary/20"
+                    placeholder="#000000"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Environment Textures */}
+            <div className="space-y-4">
+              <label className="text-sm font-medium text-foreground/70 flex items-center gap-2">
+                <ImageIcon className="w-4 h-4" />
+                Environment Texture
+              </label>
+              <div className="grid grid-cols-3 gap-2">
+                {environments.map((env) => (
+                  <button
+                    key={env}
+                    onClick={() => onEnvChange(env)}
+                    className={`relative aspect-square overflow-hidden rounded-md border-2 transition-all
+                      ${currentEnv === env 
+                        ? 'border-primary shadow-[0_0_10px_rgba(0,128,255,0.3)]' 
+                        : 'border-primary/20 hover:border-primary/50'}`}
+                  >
+                    <img
+                      src={env}
+                      alt={env.replace('.jpg', '')}
+                      className="w-full h-full object-cover"
+                    />
+                    {currentEnv === env && (
+                      <div className="absolute inset-0 bg-primary/20" />
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="user" className="space-y-6 py-4">
+            {/* Gender Selection */}
             <div className="space-y-4">
               <label className="text-sm font-medium text-foreground/70">Gender</label>
               <div className="flex gap-4">
@@ -218,6 +261,7 @@ export function SettingsDrawer({
               </div>
             </div>
 
+            {/* Age Input */}
             <div>
               <label className="block text-sm font-medium text-primary/70">Age</label>
               <input
@@ -231,6 +275,7 @@ export function SettingsDrawer({
               />
             </div>
 
+            {/* Health Goals */}
             <div>
               <label className="block text-sm font-medium text-primary/70 mb-2">
                 Health Goals
@@ -240,37 +285,8 @@ export function SettingsDrawer({
                 onChange={handleGoalsChange}
               />
             </div>
-
-            {/* Add Environment section */}
-            <div className="space-y-4">
-              <label className="text-sm font-medium text-foreground/70 flex items-center gap-2">
-                <ImageIcon className="w-4 h-4" />
-                Environment Texture
-              </label>
-              <div className="grid grid-cols-3 gap-2">
-                {environments.map((env) => (
-                  <button
-                    key={env}
-                    onClick={() => onEnvChange(env)}
-                    className={`relative aspect-square overflow-hidden rounded-md border-2 transition-all
-                      ${currentEnv === env 
-                        ? 'border-primary shadow-[0_0_10px_rgba(0,128,255,0.3)]' 
-                        : 'border-primary/20 hover:border-primary/50'}`}
-                  >
-                    <img
-                      src={env}
-                      alt={env.replace('.jpg', '')}
-                      className="w-full h-full object-cover"
-                    />
-                    {currentEnv === env && (
-                      <div className="absolute inset-0 bg-primary/20" />
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+          </TabsContent>
+        </Tabs>
       </SheetContent>
     </Sheet>
   );
