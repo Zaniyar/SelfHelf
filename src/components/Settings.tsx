@@ -1,5 +1,6 @@
 import { Settings as SettingsIcon, Moon, Sun, Monitor, Palette } from 'lucide-react';
 import { UserData } from './Onboarding';
+import { HealthGoals, HealthGoal } from './HealthGoals';
 
 interface SettingsDrawerProps {
   isOpen: boolean;
@@ -31,9 +32,16 @@ export const SettingsDrawer = ({
     { name: 'Custom', color: bgColor },
   ];
 
+  const handleGoalsChange = (newGoals: HealthGoal[]) => {
+    onUpdateUserData({
+      ...userData,
+      healthGoals: newGoals,
+    });
+  };
+
   return (
     <div 
-      className={`fixed right-0 top-0 h-full w-96 
+      className={`drawer fixed right-0 top-0 h-full w-96 
         bg-background border-l border-primary/20 shadow-lg 
         transform transition-transform duration-300 ease-in-out 
         ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
@@ -137,48 +145,44 @@ export const SettingsDrawer = ({
         </div>
 
         {/* User Settings */}
-        <div>
-          <h3 className="text-lg font-semibold text-primary mb-4">User Settings</h3>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-primary/70">Gender</label>
-              <select
-                value={userData.gender}
-                onChange={(e) => onUpdateUserData({ ...userData, gender: e.target.value })}
-                className="mt-1 block w-full rounded-md 
-                  border border-primary/20 
-                  bg-background text-foreground
-                  focus:border-primary focus:ring focus:ring-primary/20"
-              >
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-primary/70">Age</label>
-              <input
-                type="number"
-                value={userData.age}
-                onChange={(e) => onUpdateUserData({ ...userData, age: parseInt(e.target.value) })}
-                className="mt-1 block w-full rounded-md 
-                  border border-primary/20 
-                  bg-background text-foreground
-                  focus:border-primary focus:ring focus:ring-primary/20"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-primary/70">Health Goals</label>
-              <textarea
-                value={userData.healthGoals}
-                onChange={(e) => onUpdateUserData({ ...userData, healthGoals: e.target.value })}
-                className="mt-1 block w-full rounded-md 
-                  border border-primary/20 
-                  bg-background text-foreground
-                  focus:border-primary focus:ring focus:ring-primary/20"
-                rows={3}
-              />
-            </div>
+        <div className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-primary/70">Gender</label>
+            <select
+              value={userData.gender}
+              onChange={(e) => onUpdateUserData({ ...userData, gender: e.target.value })}
+              className="mt-1 block w-full rounded-md 
+                border border-primary/20 
+                bg-background text-foreground
+                focus:border-primary focus:ring focus:ring-primary/20"
+            >
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-primary/70">Age</label>
+            <input
+              type="number"
+              value={userData.age}
+              onChange={(e) => onUpdateUserData({ ...userData, age: parseInt(e.target.value) })}
+              className="mt-1 block w-full rounded-md 
+                border border-primary/20 
+                bg-background text-foreground
+                focus:border-primary focus:ring focus:ring-primary/20"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-primary/70 mb-2">
+              Health Goals
+            </label>
+            <HealthGoals
+              goals={userData.healthGoals}
+              onChange={handleGoalsChange}
+            />
           </div>
         </div>
       </div>

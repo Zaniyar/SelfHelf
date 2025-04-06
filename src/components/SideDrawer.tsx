@@ -196,7 +196,7 @@ export const SideDrawer = ({ isOpen, onClose, onSave, supplement, mode, selected
 
   return (
     <div 
-      className={`fixed right-0 top-0 h-full w-96 
+      className={`drawer fixed right-0 top-0 h-full w-96 
         bg-background border-l border-primary/20 shadow-lg 
         transform transition-transform duration-300 ease-in-out 
         ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
