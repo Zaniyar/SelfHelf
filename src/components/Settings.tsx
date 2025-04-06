@@ -1,4 +1,4 @@
-import { Settings as SettingsIcon, Moon, Sun, Monitor, Palette } from 'lucide-react';
+import { Settings as SettingsIcon, Moon, Sun, Monitor, Palette, Mars, Venus, User } from 'lucide-react';
 import { UserData } from './Onboarding';
 import { HealthGoals, HealthGoal } from './HealthGoals';
 
@@ -146,20 +146,60 @@ export const SettingsDrawer = ({
 
         {/* User Settings */}
         <div className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-primary/70">Gender</label>
-            <select
-              value={userData.gender}
-              onChange={(e) => onUpdateUserData({ ...userData, gender: e.target.value })}
-              className="mt-1 block w-full rounded-md 
-                border border-primary/20 
-                bg-background text-foreground
-                focus:border-primary focus:ring focus:ring-primary/20"
-            >
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
+          <div className="space-y-4">
+            <label className="text-sm font-medium text-foreground/70">Gender</label>
+            <div className="flex gap-4">
+              <label className={`flex items-center gap-2 p-2 rounded-md cursor-pointer transition-colors
+                ${userData.gender === 'male' 
+                  ? 'bg-primary/20 text-primary border border-primary/30' 
+                  : 'hover:bg-primary/10 border border-primary/10'}`}
+              >
+                <input
+                  type="radio"
+                  name="gender"
+                  value="male"
+                  checked={userData.gender === 'male'}
+                  onChange={(e) => onUpdateUserData({ ...userData, gender: e.target.value })}
+                  className="sr-only"
+                />
+                <Mars className="w-5 h-5" />
+                <span>Male</span>
+              </label>
+
+              <label className={`flex items-center gap-2 p-2 rounded-md cursor-pointer transition-colors
+                ${userData.gender === 'female' 
+                  ? 'bg-primary/20 text-primary border border-primary/30' 
+                  : 'hover:bg-primary/10 border border-primary/10'}`}
+              >
+                <input
+                  type="radio"
+                  name="gender"
+                  value="female"
+                  checked={userData.gender === 'female'}
+                  onChange={(e) => onUpdateUserData({ ...userData, gender: e.target.value })}
+                  className="sr-only"
+                />
+                <Venus className="w-5 h-5" />
+                <span>Female</span>
+              </label>
+
+              <label className={`flex items-center gap-2 p-2 rounded-md cursor-pointer transition-colors
+                ${userData.gender === 'other' 
+                  ? 'bg-primary/20 text-primary border border-primary/30' 
+                  : 'hover:bg-primary/10 border border-primary/10'}`}
+              >
+                <input
+                  type="radio"
+                  name="gender"
+                  value="other"
+                  checked={userData.gender === 'other'}
+                  onChange={(e) => onUpdateUserData({ ...userData, gender: e.target.value })}
+                  className="sr-only"
+                />
+                <User className="w-5 h-5" />
+                <span>Other</span>
+              </label>
+            </div>
           </div>
 
           <div>

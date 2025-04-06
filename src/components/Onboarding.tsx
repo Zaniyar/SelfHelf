@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { HealthGoals, HealthGoal } from './HealthGoals';
+import { Mars, Venus, User } from 'lucide-react';
 
 interface OnboardingProps {
   onComplete: (userData: UserData) => void;
@@ -47,19 +48,66 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
         <h2 className="text-2xl font-bold text-neon-blue text-center">Tell us about yourself</h2>
         
         <form onSubmit={handleSubmit} className="space-y-8">
-          <div>
+          <div className="space-y-4">
             <label className="text-foreground/70">Gender</label>
-            <select
-              value={userData.gender}
-              onChange={(e) => setUserData({ ...userData, gender: e.target.value as UserData['gender'] })}
-              className="mt-1 block w-full rounded-md border border-neon-blue/20 
-                       bg-neon-darker text-foreground shadow-sm
-                       focus:border-neon-blue focus:ring focus:ring-neon-blue/20"
-            >
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
+            <div className="flex gap-4">
+              <label className={`flex items-center gap-2 p-2 rounded-md cursor-pointer transition-all duration-200
+                ${userData.gender === 'male' 
+                  ? 'bg-neon-blue/20 text-neon-blue border-2 border-neon-blue shadow-[0_0_10px_rgba(0,128,255,0.3)]' 
+                  : 'hover:bg-neon-blue/10 border border-neon-blue/10'}`}
+              >
+                <input
+                  type="radio"
+                  name="gender"
+                  value="male"
+                  checked={userData.gender === 'male'}
+                  onChange={(e) => setUserData({ ...userData, gender: e.target.value as UserData['gender'] })}
+                  className="sr-only"
+                />
+                <Mars className={`transition-all duration-200 ${
+                  userData.gender === 'male' ? 'w-6 h-6' : 'w-5 h-5'
+                }`} />
+                <span>Male</span>
+              </label>
+
+              <label className={`flex items-center gap-2 p-2 rounded-md cursor-pointer transition-all duration-200
+                ${userData.gender === 'female' 
+                  ? 'bg-neon-blue/20 text-neon-blue border-2 border-neon-blue shadow-[0_0_10px_rgba(0,128,255,0.3)]' 
+                  : 'hover:bg-neon-blue/10 border border-neon-blue/10'}`}
+              >
+                <input
+                  type="radio"
+                  name="gender"
+                  value="female"
+                  checked={userData.gender === 'female'}
+                  onChange={(e) => setUserData({ ...userData, gender: e.target.value as UserData['gender'] })}
+                  className="sr-only"
+                />
+                <Venus className={`transition-all duration-200 ${
+                  userData.gender === 'female' ? 'w-6 h-6' : 'w-5 h-5'
+                }`} />
+                <span>Female</span>
+              </label>
+
+              <label className={`flex items-center gap-2 p-2 rounded-md cursor-pointer transition-all duration-200
+                ${userData.gender === 'other' 
+                  ? 'bg-neon-blue/20 text-neon-blue border-2 border-neon-blue shadow-[0_0_10px_rgba(0,128,255,0.3)]' 
+                  : 'hover:bg-neon-blue/10 border border-neon-blue/10'}`}
+              >
+                <input
+                  type="radio"
+                  name="gender"
+                  value="other"
+                  checked={userData.gender === 'other'}
+                  onChange={(e) => setUserData({ ...userData, gender: e.target.value as UserData['gender'] })}
+                  className="sr-only"
+                />
+                <User className={`transition-all duration-200 ${
+                  userData.gender === 'other' ? 'w-6 h-6' : 'w-5 h-5'
+                }`} />
+                <span>Other</span>
+              </label>
+            </div>
           </div>
 
           <div className="space-y-2">

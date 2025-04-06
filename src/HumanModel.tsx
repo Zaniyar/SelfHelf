@@ -54,7 +54,7 @@ export function HumanModel({ onPointerDown, onPointerUp, gender }: HumanModelPro
         }
     });
     
-    console.log("bonePositions", bonePositions)
+    //console.log("bonePositions", bonePositions)
     const closeBodyPart = (event: ThreeEvent<PointerEvent>) => {
       const clickedPoint = event.point;
       let closestBone = null;
@@ -83,11 +83,13 @@ export function HumanModel({ onPointerDown, onPointerUp, gender }: HumanModelPro
       dispose={null}
     >
       <primitive object={nodes.RootNode} />
-      <skinnedMesh
-        geometry={nodes.haircut_generated.geometry}
-        material={nodes.haircut_generated.material}
-        skeleton={nodes.haircut_generated.skeleton}
-      />
+      {gender !== 'other' && (
+        <skinnedMesh
+          geometry={nodes.haircut_generated.geometry}
+          material={nodes.haircut_generated.material}
+          skeleton={nodes.haircut_generated.skeleton}
+        />
+      )}
 {/*       <skinnedMesh
         geometry={nodes.outfit_meta_5_lowpoly.geometry}
         material={nodes.outfit_meta_5_lowpoly.material}
