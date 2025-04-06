@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
+import { ThreeEvent } from "@react-three/fiber";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -13,12 +14,28 @@ type GLTFResult = GLTF & {
   materials: {}
 }
 
-export function HumanModel(props: JSX.IntrinsicElements['group']) {
-  const { nodes, scene, materials } = useGLTF('/zaniyar.glb') as GLTFResult
+interface HumanModelProps {
+  onPointerDown?: (event: ThreeEvent<PointerEvent>) => void;
+  onPointerUp?: (event: ThreeEvent<PointerEvent>) => void;
+  gender: 'male' | 'female' | 'other';
+}
+const bonePositions: { name: string; position: THREE.Vector3 }[] = [];
+
+export function HumanModel({ onPointerDown, onPointerUp, gender }: HumanModelProps) {
+  // Choose model based on gender
+  const modelPath = gender === 'female' ? '/woman.glb' : '/man.glb';
+  const { nodes, scene, materials } = useGLTF(modelPath) as GLTFResult
 
 
     // Traverse over all objects in the scene
     scene.traverse((object) => {
+     // console.log("object", object.name)
+
+      if (object instanceof THREE.Bone) {
+        const pos = new THREE.Vector3();
+        object.getWorldPosition(pos);
+        bonePositions.push({ name: object.name, position: pos });
+      }
         // Check if the object is a mesh
         if (object instanceof THREE.Mesh) {
             // Get the material of the mesh
@@ -28,7 +45,7 @@ export function HumanModel(props: JSX.IntrinsicElements['group']) {
                 // material.transparent = true;
                 // material.opacity = 0.3;
             
-                console.log("m", material)
+                // console.log("m", material)
                 material.map = null;
                 // material.envMap = texture;
                 material.metalness = 1.0; // Set metalness to 1 for pure metal
@@ -37,8 +54,33 @@ export function HumanModel(props: JSX.IntrinsicElements['group']) {
         }
     });
 
+    const closeBodyPart = (event: ThreeEvent<PointerEvent>) => {
+      const clickedPoint = event.point;
+      let closestBone = null;
+      let minDistance = Infinity;
+      
+      for (const bone of bonePositions) {
+        const distance = bone.position.distanceTo(clickedPoint);
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestBone = bone;
+        }
+      }
+      
+      if (closestBone) {
+        console.log(`Clicked near bone: ${closestBone.name}`);
+      }
+    }
+
   return (
-    <group {...props} dispose={null}>
+    <group 
+      onPointerDown={onPointerDown}
+      onPointerUp={(event)=>{
+        onPointerUp(event)
+        closeBodyPart(event)
+      }}
+      dispose={null}
+    >
       <primitive object={nodes.RootNode} />
       <skinnedMesh
         geometry={nodes.haircut_generated.geometry}
@@ -54,4 +96,6 @@ export function HumanModel(props: JSX.IntrinsicElements['group']) {
   )
 }
 
-useGLTF.preload('/zaniyar.glb')
+// Preload both models
+useGLTF.preload('/woman.glb');
+useGLTF.preload('/man.glb');
