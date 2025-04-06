@@ -275,6 +275,38 @@ export function SettingsDrawer({
               />
             </div>
 
+            {/* Weight Input */}
+            <div>
+              <label className="block text-sm font-medium text-primary/70">Weight (kg)</label>
+              <input
+                type="number"
+                value={userData.weight}
+                onChange={(e) => onUpdateUserData({ ...userData, weight: parseInt(e.target.value) })}
+                min={30}
+                max={200}
+                className="mt-1 block w-full rounded-md 
+                  border border-primary/20 
+                  bg-background text-foreground
+                  focus:border-primary focus:ring focus:ring-primary/20"
+              />
+            </div>
+
+            {/* Height Input */}
+            <div>
+              <label className="block text-sm font-medium text-primary/70">Height (cm)</label>
+              <input
+                type="number"
+                value={userData.height}
+                onChange={(e) => onUpdateUserData({ ...userData, height: parseInt(e.target.value) })}
+                min={120}
+                max={220}
+                className="mt-1 block w-full rounded-md 
+                  border border-primary/20 
+                  bg-background text-foreground
+                  focus:border-primary focus:ring focus:ring-primary/20"
+              />
+            </div>
+
             {/* Health Goals */}
             <div>
               <label className="block text-sm font-medium text-primary/70 mb-2">
