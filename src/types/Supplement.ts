@@ -6,6 +6,7 @@ export interface Supplement {
   frequency: string;
   position: [number, number, number];
   targetArea: string;
+  type?: 'Brain' | 'Heart' | 'Joint' | 'Vitamin' | 'Energy' | 'Muscle' | 'default';
 }
 
 export interface UserData {

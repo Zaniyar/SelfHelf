@@ -17,7 +17,7 @@ function Vid() {
   // const vid = useVideoTexture("https://video.wixstatic.com/video/8d6639_0d806054eddc4e4d8b9230507c4866ba/1080p/mp4/file.mp4");
   const vid = useTexture("sky.jpg");
   return <Sphere scale={6} rotation={[0,1.7,0]}>
-    <meshBasicMaterial map={vid} toneMapped={false} side={DoubleSide} />
+    <meshBasicMaterial map={vid} color={"#222222"} toneMapped={false} side={DoubleSide} />
   </Sphere>
 }
 
@@ -31,6 +31,7 @@ const App = () => {
   const [isAddingMode, setIsAddingMode] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartTime, setDragStartTime] = useState(0);
+  const [selectedBone, setSelectedBone] = useState<string | undefined>();
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -68,6 +69,17 @@ const App = () => {
         setIsAddingMode(false);
         document.body.style.cursor = 'auto';
       }
+    }
+  };
+
+  const handleModelClick = (event: ThreeEvent<PointerEvent>, boneName?: string) => {
+    if (isAddingMode) {
+      const position = event.point.toArray();
+      setPendingPosition(position);
+      setSelectedBone(boneName);
+      setIsDrawerOpen(true);
+      setIsAddingMode(false);
+      document.body.style.cursor = 'auto';
     }
   };
 
@@ -118,6 +130,7 @@ const App = () => {
           onPointerDown={handleModelPointerDown}
           onPointerUp={handleModelPointerUp}
           gender={userData?.gender || 'other'}
+          onClick={handleModelClick}
         />
         <RandomizedLight castShadow amount={8} frames={100} position={[5, 5, -10]} />
         <Vid/>
@@ -136,6 +149,7 @@ const App = () => {
         onSave={handleSaveSupplement}
         supplement={selectedSupplement}
         mode={selectedSupplement ? 'view' : 'add'}
+        selectedBone={selectedBone}
       />
       <OverlayMessage
         isVisible={isAddingMode}
