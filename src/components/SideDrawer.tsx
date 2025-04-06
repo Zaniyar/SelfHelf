@@ -195,16 +195,18 @@ export const SideDrawer = ({ isOpen, onClose, onSave, supplement, mode, selected
   };
 
   return (
-    <div className={`fixed right-0 top-0 h-full w-96 bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+    <div 
+      className={`fixed right-0 top-0 h-full w-96 
+        bg-background border-l border-primary/20 shadow-lg 
+        transform transition-transform duration-300 ease-in-out 
+        ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+    >
       <div className="p-6">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">
+          <h2 className="text-2xl font-bold text-primary">
             {mode === 'add' ? 'Add Supplement' : 'Supplement Details'}
           </h2>
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
-          >
+          <button onClick={onClose} className="text-primary/70 hover:text-primary">
             ✕
           </button>
         </div>
@@ -225,64 +227,79 @@ export const SideDrawer = ({ isOpen, onClose, onSave, supplement, mode, selected
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Name</label>
+            <label className="block text-sm font-medium text-primary/70">Name</label>
             <input
               type="text"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-md 
+                border border-primary/20 
+                bg-background text-foreground
+                focus:border-primary focus:ring focus:ring-primary/20"
               disabled={mode === 'view'}
               placeholder="Enter supplement name"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Description</label>
+            <label className="block text-sm font-medium text-primary/70">Description</label>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-md 
+                border border-primary/20 
+                bg-background text-foreground
+                focus:border-primary focus:ring focus:ring-primary/20"
               rows={3}
               disabled={mode === 'view'}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Dosage</label>
+            <label className="block text-sm font-medium text-primary/70">Dosage</label>
             <input
               type="text"
               value={formData.dosage}
               onChange={(e) => setFormData({ ...formData, dosage: e.target.value })}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-md 
+                border border-primary/20 
+                bg-background text-foreground
+                focus:border-primary focus:ring focus:ring-primary/20"
               disabled={mode === 'view'}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Frequency</label>
+            <label className="block text-sm font-medium text-primary/70">Frequency</label>
             <input
               type="text"
               value={formData.frequency}
               onChange={(e) => setFormData({ ...formData, frequency: e.target.value })}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-md 
+                border border-primary/20 
+                bg-background text-foreground
+                focus:border-primary focus:ring focus:ring-primary/20"
               disabled={mode === 'view'}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Target Area</label>
+            <label className="block text-sm font-medium text-primary/70">Target Area</label>
             <input
               type="text"
               value={formData.targetArea}
               onChange={(e) => setFormData({ ...formData, targetArea: e.target.value })}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-md 
+                border border-primary/20 
+                bg-background text-foreground
+                focus:border-primary focus:ring focus:ring-primary/20"
               disabled={mode === 'view'}
               placeholder={selectedBone || "Select an area on the model"}
             />
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">Body Parts</label>
+            <label className="text-sm font-medium text-primary/70">Body Parts</label>
             <div className="flex flex-wrap gap-1 mb-2 max-h-20 overflow-y-auto">
               {selectedBodyParts.map(part => (
                 <Badge key={part} variant="secondary" className="flex items-center gap-1">

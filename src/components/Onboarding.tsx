@@ -28,64 +28,95 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-        <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">Tell us about yourself</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="max-w-md w-full space-y-8 p-8 bg-card rounded-xl border border-neon-blue/20 shadow-lg">
+        <h2 className="text-2xl font-bold text-neon-blue text-center">Tell us about yourself</h2>
+        
+        <form className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Age</label>
-            <input
-              type="number"
-              value={userData.age}
-              onChange={(e) => setUserData({ ...userData, age: parseInt(e.target.value) })}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Weight (kg)</label>
-            <input
-              type="number"
-              value={userData.weight}
-              onChange={(e) => setUserData({ ...userData, weight: parseInt(e.target.value) })}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Height (cm)</label>
-            <input
-              type="number"
-              value={userData.height}
-              onChange={(e) => setUserData({ ...userData, height: parseInt(e.target.value) })}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Gender</label>
+            <label className="text-foreground/70">Gender</label>
             <select
               value={userData.gender}
               onChange={(e) => setUserData({ ...userData, gender: e.target.value as UserData['gender'] })}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-md border border-neon-blue/20 
+                       bg-neon-darker text-foreground shadow-sm
+                       focus:border-neon-blue focus:ring focus:ring-neon-blue/20"
             >
               <option value="male">Male</option>
               <option value="female">Female</option>
               <option value="other">Other</option>
             </select>
           </div>
+
           <div>
-            <label className="block text-sm font-medium text-gray-700">Activity Level</label>
+            <label className="text-foreground/70">Age</label>
+            <input
+              type="number"
+              value={userData.age}
+              onChange={(e) => setUserData({ ...userData, age: parseInt(e.target.value) })}
+              className="mt-1 block w-full rounded-md border border-neon-blue/20 
+                       bg-neon-darker text-foreground shadow-sm
+                       focus:border-neon-blue focus:ring focus:ring-neon-blue/20"
+            />
+          </div>
+
+          <div>
+            <label className="text-foreground/70">Weight (kg)</label>
+            <input
+              type="number"
+              value={userData.weight}
+              onChange={(e) => setUserData({ ...userData, weight: parseInt(e.target.value) })}
+              className="mt-1 block w-full rounded-md border border-neon-blue/20 
+                       bg-neon-darker text-foreground shadow-sm
+                       focus:border-neon-blue focus:ring focus:ring-neon-blue/20"
+            />
+          </div>
+
+          <div>
+            <label className="text-foreground/70">Height (cm)</label>
+            <input
+              type="number"
+              value={userData.height}
+              onChange={(e) => setUserData({ ...userData, height: parseInt(e.target.value) })}
+              className="mt-1 block w-full rounded-md border border-neon-blue/20 
+                       bg-neon-darker text-foreground shadow-sm
+                       focus:border-neon-blue focus:ring focus:ring-neon-blue/20"
+            />
+          </div>
+
+          <div>
+            <label className="text-foreground/70">Activity Level</label>
             <select
               value={userData.activityLevel}
               onChange={(e) => setUserData({ ...userData, activityLevel: e.target.value as UserData['activityLevel'] })}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-md border border-neon-blue/20 
+                       bg-neon-darker text-foreground shadow-sm
+                       focus:border-neon-blue focus:ring focus:ring-neon-blue/20"
             >
               <option value="sedentary">Sedentary</option>
               <option value="moderate">Moderate</option>
               <option value="active">Very Active</option>
             </select>
           </div>
+
+          <div>
+            <label className="text-foreground/70">Health Goals</label>
+            <textarea
+              value={userData.healthGoals}
+              onChange={(e) => setUserData({ ...userData, healthGoals: e.target.value })}
+              rows={3}
+              className="mt-1 block w-full rounded-md border border-neon-blue/20 
+                       bg-neon-darker text-foreground shadow-sm
+                       focus:border-neon-blue focus:ring focus:ring-neon-blue/20"
+            />
+          </div>
+
           <button
-            type="submit"
-            className="w-full bg-blue-600 text-white rounded-md py-2 px-4 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            type="button"
+            onClick={handleSubmit}
+            className="w-full py-2 px-4 bg-neon-darker text-neon-blue border border-neon-blue/30 
+                     rounded-md hover:bg-neon-blue/10 focus:outline-none focus:ring-2 
+                     focus:ring-neon-blue/50 transition-all duration-200"
           >
             Continue
           </button>

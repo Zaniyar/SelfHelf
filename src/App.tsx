@@ -2,7 +2,7 @@ import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls, RandomizedLight, Sphere, useTexture } from '@react-three/drei';
 import { HumanModel } from './HumanModel';
 import { DoubleSide } from 'three';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Login } from './components/Login';
 import { Onboarding, UserData } from './components/Onboarding';
 import { AddSupplementButton } from './components/AddSupplementButton';
@@ -12,12 +12,18 @@ import { SupplementMarker } from './components/SupplementMarker';
 import { Supplement } from './types/Supplement';
 import { v4 as uuidv4 } from 'uuid';
 import { ThreeEvent } from '@react-three/fiber';
+import { SettingsDrawer } from './components/Settings';
+import { FloatingButtons } from './components/FloatingButtons';
 
-function Vid() {
-  // const vid = useVideoTexture("https://video.wixstatic.com/video/8d6639_0d806054eddc4e4d8b9230507c4866ba/1080p/mp4/file.mp4");
+// Move Vid outside of App and add props
+interface VidProps {
+  bgColor: string;
+}
+
+function Vid({ bgColor }: VidProps) {
   const vid = useTexture("sky.jpg");
   return <Sphere scale={6} rotation={[0,1.7,0]}>
-    <meshBasicMaterial map={vid} color={"#222222"} toneMapped={false} side={DoubleSide} />
+    <meshBasicMaterial map={vid} color={bgColor} toneMapped={false} side={DoubleSide} />
   </Sphere>
 }
 
@@ -32,6 +38,45 @@ const App = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartTime, setDragStartTime] = useState(0);
   const [selectedBone, setSelectedBone] = useState<string | undefined>();
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark' | 'system'>(
+    () => (localStorage.getItem('theme') as 'light' | 'dark' | 'system') || 'dark'
+  );
+  const [bgColor, setBgColor] = useState(() => 
+    localStorage.getItem('bgColor') || '#222222'
+  );
+
+  // Update theme effect
+  useEffect(() => {
+    const root = window.document.documentElement;
+    const isDark = theme === 'dark' || 
+      (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    
+    root.classList.toggle('dark', isDark);
+    
+    // Listen for system theme changes
+    if (theme === 'system') {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      const handler = (e: MediaQueryListEvent) => {
+        root.classList.toggle('dark', e.matches);
+      };
+      
+      mediaQuery.addEventListener('change', handler);
+      return () => mediaQuery.removeEventListener('change', handler);
+    }
+  }, [theme]);
+
+  const handleThemeChange = (newTheme: 'light' | 'dark' | 'system') => {
+    setTheme(newTheme);
+    // Optionally save to localStorage
+    localStorage.setItem('theme', newTheme);
+  };
+
+  const handleUpdateUserData = (newData: UserData) => {
+    setUserData(newData);
+    // Optionally save to localStorage or your backend
+    localStorage.setItem('userData', JSON.stringify(newData));
+  };
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -106,6 +151,11 @@ const App = () => {
     setPendingPosition(null);
   };
 
+  const handleBgColorChange = (newColor: string) => {
+    setBgColor(newColor);
+    localStorage.setItem('bgColor', newColor);
+  };
+
   if (!isLoggedIn) {
     return <Login onLogin={handleLogin} />;
   }
@@ -115,7 +165,7 @@ const App = () => {
   }
 
   return (
-    <div className="h-screen w-screen relative">
+    <div className="canvas-container h-screen w-screen relative">
       <Canvas camera={{ position: [0, 2, 2.5], fov: 50 }}>
         <OrbitControls 
           minDistance={2}
@@ -133,7 +183,7 @@ const App = () => {
           onClick={handleModelClick}
         />
         <RandomizedLight castShadow amount={8} frames={100} position={[5, 5, -10]} />
-        <Vid/>
+        <Vid bgColor={bgColor} />
         {supplements.map((supplement) => (
           <SupplementMarker
             key={supplement.id}
@@ -142,7 +192,10 @@ const App = () => {
           />
         ))}
       </Canvas>
-      <AddSupplementButton onClick={handleAddSupplement} />
+      <FloatingButtons 
+        onAddClick={handleAddSupplement}
+        onSettingsClick={() => setIsSettingsOpen(true)}
+      />
       <SideDrawer
         isOpen={isDrawerOpen}
         onClose={handleCloseDrawer}
@@ -150,6 +203,16 @@ const App = () => {
         supplement={selectedSupplement}
         mode={selectedSupplement ? 'view' : 'add'}
         selectedBone={selectedBone}
+      />
+      <SettingsDrawer
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        userData={userData}
+        onUpdateUserData={handleUpdateUserData}
+        currentTheme={theme}
+        onThemeChange={handleThemeChange}
+        bgColor={bgColor}
+        onBgColorChange={handleBgColorChange}
       />
       <OverlayMessage
         isVisible={isAddingMode}

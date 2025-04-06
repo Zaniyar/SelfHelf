@@ -4,8 +4,9 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Light theme */
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
@@ -31,7 +32,8 @@
     --radius: 0.5rem
   }
   .dark {
-    --background: 222.2 84% 4.9%;
+    /* Dark theme */
+    --background: 222 47% 11%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
@@ -54,7 +56,11 @@
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%
+    --chart-5: 340 75% 55%;
+    /* Neon theme colors */
+    --neon-glow: #00ffff;
+    --neon-dark: #000814;
+    --neon-darker: #001830;
   }
 }
 
@@ -63,6 +69,22 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground transition-colors duration-300;
   }
+}
+
+.canvas-container {
+  border-radius: 20px;
+  border: 3px solid #13c5c5;
+  overflow: hidden;
+  box-shadow: inset 0px 0px 0px 3px #035d6f;
+  padding: 3px;
+}
+#root {
+  background: cyan;
+}
+
+/* Form styles */
+input, select, textarea {
+  @apply bg-background border-border text-foreground;
 }

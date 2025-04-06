@@ -7,7 +7,7 @@ export const OverlayMessage = ({ message, isVisible }: OverlayMessageProps) => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed left-0 right-0 bottom-8 mx-auto w-fit bg-black/50 backdrop-blur-sm text-white px-4 py-2 rounded-full shadow-lg z-50 flex items-center space-x-2 text-sm animate-bounce">
+    <div className="fixed left-0 right-0 bottom-8 mx-auto w-fit bg-[#000814]/80 backdrop-blur-sm border border-[#00ffff]/30 text-[#00ffff] px-4 py-2 rounded-full shadow-lg z-50 flex items-center space-x-2 text-sm animate-bounce">
       <svg 
         xmlns="http://www.w3.org/2000/svg" 
         className="h-4 w-4" 

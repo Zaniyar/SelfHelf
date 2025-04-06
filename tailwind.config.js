@@ -2,12 +2,14 @@ import animate from "tailwindcss-animate"
 
 /** @type {import('tailwindcss').Config} */
 export default {
-    darkMode: ['class'],
+    darkMode: 'class',
     content: [
         './pages/**/*.{ts,tsx}',
         './components/**/*.{ts,tsx}',
         './app/**/*.{ts,tsx}',
         './src/**/*.{ts,tsx}',
+        "./index.html",
+        "./src/**/*.{js,ts,jsx,tsx}",
     ],
     prefix: "",
     theme: {
@@ -78,6 +80,11 @@ export default {
                     '3': 'hsl(var(--chart-3))',
                     '4': 'hsl(var(--chart-4))',
                     '5': 'hsl(var(--chart-5))'
+                },
+                neon: {
+                    blue: '#00ffff',
+                    dark: '#000814',
+                    darker: '#001830',
                 }
             }
         }

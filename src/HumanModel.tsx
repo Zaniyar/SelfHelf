@@ -53,7 +53,8 @@ export function HumanModel({ onPointerDown, onPointerUp, gender }: HumanModelPro
             }
         }
     });
-
+    
+    console.log("bonePositions", bonePositions)
     const closeBodyPart = (event: ThreeEvent<PointerEvent>) => {
       const clickedPoint = event.point;
       let closestBone = null;

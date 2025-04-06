@@ -54,20 +54,20 @@ export const SupplementMarker = ({ supplement, onClick }: SupplementMarkerProps)
       <mesh>
         <sphereGeometry args={[0.03]} />
         <meshStandardMaterial 
-          color={hovered ? '#ff6b6b' : '#ff0000'} 
-          emissive={hovered ? '#ff6b6b' : '#000000'}
-          emissiveIntensity={hovered ? 0.5 : 0}
+          color={hovered ? 'tomato' : 'red'} 
+          emissive={hovered ? '#00FF55' : '#FFA600'}
+          emissiveIntensity={hovered ? 1 : 0}
           transparent={true}
-          opacity={0.5}
+          opacity={0.8}
         />
       </mesh>
 
       {/* Tooltip - reduced distance by changing y position from 0.3 to 0.15 */}
       {hovered && (
         <Html position={[0, 0.15, 0]}>
-          <div className="bg-white px-2 py-1 rounded shadow text-sm whitespace-nowrap">
+          <div className="bg-[#000814]/80 backdrop-blur-sm border border-[#00ffff]/30 px-3 py-2 rounded text-sm whitespace-nowrap text-[#00ffff] shadow-lg shadow-[#00ffff]/20">
             {supplement.name}
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-[#00ffff]/70">
               {supplement.targetArea}
             </div>
           </div>
