@@ -14,6 +14,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { ThreeEvent } from '@react-three/fiber';
 import { SettingsDrawer } from './components/Settings';
 import { FloatingButtons } from './components/FloatingButtons';
+import { PainPointDrawer } from './components/PainPointDrawer';
+import { PainPoint } from './types/PainPoint';
+import { PainPointMarker } from './components/PainPointMarker';
 
 // Move Vid outside of App and add props
 interface VidProps {
@@ -48,6 +51,9 @@ const App = () => {
   const [environment, setEnvironment] = useState(() => 
     localStorage.getItem('environment') || 'zebra.jpg'
   );
+  const [painPoints, setPainPoints] = useState<PainPoint[]>([]);
+  const [isPainDrawerOpen, setIsPainDrawerOpen] = useState(false);
+  const [isAddingPainPoint, setIsAddingPainPoint] = useState(false);
 
   // Update theme effect
   useEffect(() => {
@@ -95,38 +101,49 @@ const App = () => {
   };
 
   const handleModelPointerDown = (event: ThreeEvent<PointerEvent>) => {
-    if (isAddingMode) {
+    if (isAddingMode || isAddingPainPoint) {
       console.log('Pointer down');
       setDragStartTime(Date.now());
     }
   };
 
-
   const handleModelPointerUp = (event: ThreeEvent<PointerEvent>) => {
-    if (isAddingMode) {
+    if (isAddingMode || isAddingPainPoint) {
       console.log('Pointer up');
       const dragDuration = Date.now() - dragStartTime;
       console.log('Drag duration:', dragDuration);
       
       // If the drag duration is less than 200ms, consider it a click
       if (dragDuration < 200) {
-        console.log('Adding supplement at position:', event.point.toArray());
+        console.log('Adding point at position:', event.point.toArray());
         const position = event.point.toArray();
         setPendingPosition(position);
-        setIsDrawerOpen(true);
-        setIsAddingMode(false);
+        
+        if (isAddingMode) {
+          setIsDrawerOpen(true);
+          setIsAddingMode(false);
+        } else {
+          setIsPainDrawerOpen(true);
+          setIsAddingPainPoint(false);
+        }
         document.body.style.cursor = 'auto';
       }
     }
   };
 
   const handleModelClick = (event: ThreeEvent<PointerEvent>, boneName?: string) => {
-    if (isAddingMode) {
+    if (isAddingMode || isAddingPainPoint) {
       const position = event.point.toArray();
       setPendingPosition(position);
       setSelectedBone(boneName);
-      setIsDrawerOpen(true);
-      setIsAddingMode(false);
+      
+      if (isAddingMode) {
+        setIsDrawerOpen(true);
+        setIsAddingMode(false);
+      } else {
+        setIsPainDrawerOpen(true);
+        setIsAddingPainPoint(false);
+      }
       document.body.style.cursor = 'auto';
     }
   };
@@ -164,12 +181,29 @@ const App = () => {
     localStorage.setItem('environment', newEnv);
   };
 
+  const handleAddPainPoint = () => {
+    setIsAddingPainPoint(true);
+    document.body.style.cursor = 'crosshair';
+  };
+
+  const handleSavePainPoint = (painPointData: Omit<PainPoint, 'id' | 'position'>) => {
+    if (pendingPosition) {
+      const newPainPoint: PainPoint = {
+        ...painPointData,
+        id: uuidv4(),
+        position: pendingPosition,
+      };
+      setPainPoints([...painPoints, newPainPoint]);
+      setPendingPosition(null);
+    }
+  };
+
   // Add this effect after your other useEffect hooks
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isAddingMode) {
-        // Cancel adding supplement
+      if (event.key === 'Escape' && (isAddingMode || isAddingPainPoint)) {
         setIsAddingMode(false);
+        setIsAddingPainPoint(false);
         document.body.style.cursor = 'auto';
       }
     };
@@ -181,7 +215,7 @@ const App = () => {
     return () => {
       document.removeEventListener('keydown', handleEscape);
     };
-  }, [isAddingMode]); // Only re-run if isAddingMode changes
+  }, [isAddingMode, isAddingPainPoint]); // Only re-run if isAddingMode changes
 
   if (!isLoggedIn) {
     return <Login onLogin={handleLogin} />;
@@ -220,9 +254,20 @@ const App = () => {
             onClick={handleSupplementClick}
           />
         ))}
+        {painPoints.map((painPoint) => (
+          <PainPointMarker
+            key={painPoint.id}
+            painPoint={painPoint}
+            onClick={(painPoint) => {
+              // Handle pain point click - you could show details in a drawer
+              console.log('Pain point clicked:', painPoint);
+            }}
+          />
+        ))}
       </Canvas>
       <FloatingButtons 
-        onAddClick={handleAddSupplement}
+        onAddSupplementClick={handleAddSupplement}
+        onAddPainPointClick={handleAddPainPoint}
         onSettingsClick={() => setIsSettingsOpen(true)}
       />
       <SideDrawer
@@ -245,9 +290,18 @@ const App = () => {
         currentEnv={environment}
         onEnvChange={handleEnvironmentChange}
       />
+      <PainPointDrawer
+        isOpen={isPainDrawerOpen}
+        onClose={() => {
+          setIsPainDrawerOpen(false);
+          setPendingPosition(null);
+        }}
+        onSave={handleSavePainPoint}
+        selectedBone={selectedBone}
+      />
       <OverlayMessage
-        isVisible={isAddingMode}
-        message="Click on the body model to place your supplement"
+        isVisible={isAddingMode || isAddingPainPoint}
+        message={`Click on the body model to place your ${isAddingMode ? 'supplement' : 'pain point'}`}
       />
     </div>
   );
