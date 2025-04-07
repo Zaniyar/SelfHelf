@@ -17,6 +17,7 @@ import { FloatingButtons } from './components/FloatingButtons';
 import { PainPointDrawer } from './components/PainPointDrawer';
 import { PainPoint } from './types/PainPoint';
 import { PainPointMarker } from './components/PainPointMarker';
+import { FilterBox } from './components/FilterBox';
 
 // Move Vid outside of App and add props
 interface VidProps {
@@ -54,6 +55,8 @@ const App = () => {
   const [painPoints, setPainPoints] = useState<PainPoint[]>([]);
   const [isPainDrawerOpen, setIsPainDrawerOpen] = useState(false);
   const [isAddingPainPoint, setIsAddingPainPoint] = useState(false);
+  const [showSupplements, setShowSupplements] = useState(true);
+  const [showPainPoints, setShowPainPoints] = useState(true);
 
   // Update theme effect
   useEffect(() => {
@@ -229,6 +232,14 @@ const App = () => {
     <div className="canvas-container h-screen w-screen relative">
       <h1 className="title text-4xl font-bold text-center text-white borel-regular">SelfHelf</h1>
       <h2 className="subtitle">feel good</h2>
+      
+      <FilterBox 
+        showSupplements={showSupplements}
+        showPainPoints={showPainPoints}
+        onToggleSupplements={() => setShowSupplements(!showSupplements)}
+        onTogglePainPoints={() => setShowPainPoints(!showPainPoints)}
+      />
+
       <Canvas camera={{ position: [0, 2, 2.5], fov: 50 }}>
         <OrbitControls 
           minDistance={1}
@@ -247,19 +258,18 @@ const App = () => {
         />
         <RandomizedLight castShadow amount={8} frames={100} position={[5, 5, -10]} />
         <Vid bgColor={bgColor} />
-        {supplements.map((supplement) => (
+        {showSupplements && supplements.map((supplement) => (
           <SupplementMarker
             key={supplement.id}
             supplement={supplement}
             onClick={handleSupplementClick}
           />
         ))}
-        {painPoints.map((painPoint) => (
+        {showPainPoints && painPoints.map((painPoint) => (
           <PainPointMarker
             key={painPoint.id}
             painPoint={painPoint}
             onClick={(painPoint) => {
-              // Handle pain point click - you could show details in a drawer
               console.log('Pain point clicked:', painPoint);
             }}
           />
