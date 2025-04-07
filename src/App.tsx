@@ -164,6 +164,25 @@ const App = () => {
     localStorage.setItem('environment', newEnv);
   };
 
+  // Add this effect after your other useEffect hooks
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isAddingMode) {
+        // Cancel adding supplement
+        setIsAddingMode(false);
+        document.body.style.cursor = 'auto';
+      }
+    };
+
+    // Add event listener
+    document.addEventListener('keydown', handleEscape);
+
+    // Cleanup
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isAddingMode]); // Only re-run if isAddingMode changes
+
   if (!isLoggedIn) {
     return <Login onLogin={handleLogin} />;
   }
