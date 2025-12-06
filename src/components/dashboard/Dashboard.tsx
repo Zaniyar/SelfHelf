@@ -89,7 +89,7 @@ export function Dashboard({
                     <div>
                         <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
                             {getGreeting()}{userName ? `, ${userName}` : ''}
-                            <span className="text-2xl">👋</span>
+                            <span className="text-2xl"></span>
                         </h1>
                         <p className="text-sm text-foreground/60 font-medium">{getStatusMessage()}</p>
                     </div>

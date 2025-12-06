@@ -29,11 +29,11 @@ const happinessColors: Record<HappinessLevel, string> = {
 };
 
 const happinessEmoji: Record<HappinessLevel, string> = {
-    thriving: '😄',
-    good: '🙂',
-    neutral: '😐',
-    stressed: '😟',
-    critical: '😰',
+    thriving: '',
+    good: '',
+    neutral: '',
+    stressed: '',
+    critical: '',
 };
 
 const trendIcons = {
