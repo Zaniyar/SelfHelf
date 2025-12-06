@@ -84,7 +84,7 @@ function SortableGoalItem({ goal, onStatusChange, onDelete }: SortableGoalItemPr
       >
         <ArrowUpDown className="w-4 h-4 text-primary/50 hover:text-primary" />
       </button>
-      
+
       <button
         onClick={() => onStatusChange(goal.id)}
         className={`transition-colors ${statusColors[goal.status]} hover:text-primary`}
@@ -105,8 +105,11 @@ function SortableGoalItem({ goal, onStatusChange, onDelete }: SortableGoalItemPr
   );
 }
 
-export function HealthGoals({ goals, onChange }: HealthGoalsProps) {
+export function HealthGoals({ goals = [], onChange }: HealthGoalsProps) {
   const [newGoal, setNewGoal] = useState('');
+
+  // Safety check - ensure goals is always an array
+  const safeGoals = Array.isArray(goals) ? goals : [];
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -119,16 +122,16 @@ export function HealthGoals({ goals, onChange }: HealthGoalsProps) {
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      const oldIndex = goals.findIndex((goal) => goal.id === active.id);
-      const newIndex = goals.findIndex((goal) => goal.id === over.id);
-      
-      onChange(arrayMove(goals, oldIndex, newIndex));
+      const oldIndex = safeGoals.findIndex((goal) => goal.id === active.id);
+      const newIndex = safeGoals.findIndex((goal) => goal.id === over.id);
+
+      onChange(arrayMove(safeGoals, oldIndex, newIndex));
     }
   };
 
   const handleStatusChange = (id: string) => {
     onChange(
-      goals.map((goal) =>
+      safeGoals.map((goal) =>
         goal.id === id
           ? { ...goal, status: nextStatus[goal.status] }
           : goal
@@ -137,14 +140,14 @@ export function HealthGoals({ goals, onChange }: HealthGoalsProps) {
   };
 
   const handleDelete = (id: string) => {
-    onChange(goals.filter((goal) => goal.id !== id));
+    onChange(safeGoals.filter((goal) => goal.id !== id));
   };
 
   const handleAddGoal = (e: React.FormEvent) => {
     e.preventDefault();
     if (newGoal.trim()) {
       onChange([
-        ...goals,
+        ...safeGoals,
         {
           id: uuidv4(),
           text: newGoal.trim(),
@@ -184,10 +187,10 @@ export function HealthGoals({ goals, onChange }: HealthGoalsProps) {
         onDragEnd={handleDragEnd}
       >
         <SortableContext
-          items={goals}
+          items={safeGoals}
           strategy={verticalListSortingStrategy}
         >
-          {goals.map((goal) => (
+          {safeGoals.map((goal) => (
             <SortableGoalItem
               key={goal.id}
               goal={goal}
