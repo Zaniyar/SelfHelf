@@ -67,7 +67,7 @@ export function OrganHappinessOverlay({
                     >
                         <button
                             onClick={() => onOrganClick?.(organ)}
-                            className="group relative"
+                            className="group relative z-50"
                             style={{ transform: 'scale(0.8)' }}
                         >
                             {/* Glow effect for alert states */}
@@ -83,9 +83,9 @@ export function OrganHappinessOverlay({
 
                             {/* Main indicator */}
                             <div
-                                className="relative flex items-center justify-center w-10 h-10 rounded-full 
+                                className="relative flex items-center justify-center w-6 h-6 rounded-full 
                          border-2 backdrop-blur-sm transition-all duration-300
-                         group-hover:scale-110 group-hover:shadow-lg"
+                         group-hover:shadow-lg"
                                 style={{
                                     backgroundColor: `${color}30`,
                                     borderColor: color,

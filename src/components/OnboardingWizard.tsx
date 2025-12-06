@@ -297,7 +297,10 @@ function BasicsStep({ userData, onChange, onNext }: BasicsStepProps) {
                             max={100}
                             value={userData.age || 30}
                             onChange={(e) => update('age', parseInt(e.target.value))}
-                            className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary hover:accent-cyan-400 transition-all"
+                            className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer transition-all"
+                            style={{
+                                accentColor: '#2F687D'
+                            }}
                         />
                     </div>
 
@@ -313,7 +316,10 @@ function BasicsStep({ userData, onChange, onNext }: BasicsStepProps) {
                             max={200}
                             value={userData.weight || 70}
                             onChange={(e) => update('weight', parseInt(e.target.value))}
-                            className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-secondary hover:accent-indigo-400 transition-all"
+                            className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer transition-all"
+                            style={{
+                                accentColor: '#2F687D'
+                            }}
                         />
                     </div>
 
@@ -329,7 +335,10 @@ function BasicsStep({ userData, onChange, onNext }: BasicsStepProps) {
                             max={220}
                             value={userData.height || 170}
                             onChange={(e) => update('height', parseInt(e.target.value))}
-                            className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-accent hover:accent-pink-400 transition-all"
+                            className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer transition-all"
+                            style={{
+                                accentColor: '#2F687D'
+                            }}
                         />
                     </div>
                 </div>

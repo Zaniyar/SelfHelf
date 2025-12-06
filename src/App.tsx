@@ -55,7 +55,7 @@ const App = () => {
     () => (localStorage.getItem('theme') as 'light' | 'dark' | 'system') || 'dark'
   );
   const [bgColor, setBgColor] = useState(() =>
-    localStorage.getItem('bgColor') || '#222222'
+    localStorage.getItem('bgColor') || '#FDFCF4'
   );
   const [environment, setEnvironment] = useState(() =>
     localStorage.getItem('environment') || 'zebra.jpg'
@@ -266,7 +266,6 @@ const App = () => {
               onClick={handleModelClick}
             />
             <RandomizedLight castShadow amount={8} frames={100} position={[5, 5, -10]} />
-            <Vid bgColor={bgColor} />
 
             {/* 3D Organ Markers */}
             <OrganHappinessOverlay

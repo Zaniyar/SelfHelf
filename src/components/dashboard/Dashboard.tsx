@@ -66,9 +66,9 @@ export function Dashboard({
     // Get greeting based on time
     const getGreeting = () => {
         const hour = new Date().getHours();
-        if (hour < 12) return 'Good morning';
-        if (hour < 17) return 'Good afternoon';
-        return 'Good evening';
+        if (hour < 12) return 'Good morning!';
+        if (hour < 17) return 'Good afternoon!';
+        return 'Good evening!';
     };
 
     // Get overall status message
@@ -84,11 +84,11 @@ export function Dashboard({
             <CrisisOverlay isOpen={isCrisisMode} onClose={() => setIsCrisisMode(false)} />
 
             {/* Header - Always interactive */}
-            <div className="px-6 py-4 border-b border-white/5 bg-black/40 backdrop-blur-md sticky top-0 z-20 pointer-events-auto">
+            <div className="px-6 py-4 border-b border-primary/20 bg-white/40 backdrop-blur-md sticky top-0 z-20 pointer-events-auto">
                 <div className="flex items-center justify-between mb-4">
                     <div>
-                        <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-                            {getGreeting()}{userName ? `, ${userName}` : ''}
+                        <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+                            <span style={{ color: '#33618A' }}>{getGreeting()}</span>{userName ? `, ${userName}` : ''}
                             <span className="text-2xl"></span>
                         </h1>
                         <p className="text-sm text-foreground/60 font-medium">{getStatusMessage()}</p>
@@ -100,12 +100,6 @@ export function Dashboard({
                         >
                             <HeartPulse className="w-4 h-4" />
                             <span className="hidden sm:inline">Stabilize</span>
-                        </button>
-                        <button className="p-2.5 rounded-xl bg-white/5 text-foreground/70 hover:text-white hover:bg-white/10 transition-all border border-white/5 hover:border-white/10">
-                            <Bell className="w-5 h-5" />
-                        </button>
-                        <button className="p-2.5 rounded-xl bg-white/5 text-foreground/70 hover:text-white hover:bg-white/10 transition-all border border-white/5 hover:border-white/10">
-                            <Settings className="w-5 h-5" />
                         </button>
                         <button
                             onClick={() => {
@@ -203,7 +197,7 @@ export function Dashboard({
             {dashboardView === 'avatar' && (
                 <div className="flex-1 flex">
                     {/* Left Sidebar - OrganPanel */}
-                    <div className="w-80 h-full overflow-y-auto p-4 bg-black/40 backdrop-blur-md border-r border-white/5 pointer-events-auto custom-scrollbar">
+                    <div className="w-80 h-full overflow-y-auto p-4 bg-white/40 backdrop-blur-md border-r border-primary/20 pointer-events-auto custom-scrollbar">
                         <h3 className="text-sm font-bold text-foreground/50 uppercase tracking-wider mb-4 flex items-center gap-2">
                             <Sparkles className="w-4 h-4 text-primary" />
                             Biological Systems
@@ -223,7 +217,7 @@ export function Dashboard({
             {dashboardView === 'combined' && (
                 <div className="flex-1 flex">
                     {/* Left Sidebar - Mini OrganPanel */}
-                    <div className="w-72 h-full overflow-y-auto p-4 bg-black/40 backdrop-blur-md border-r border-white/5 pointer-events-auto custom-scrollbar">
+                    <div className="w-72 h-full overflow-y-auto p-4 bg-white/40 backdrop-blur-md border-r border-primary/20 pointer-events-auto custom-scrollbar">
                         <h3 className="text-sm font-bold text-foreground/50 uppercase tracking-wider mb-4 flex items-center gap-2">
                             <Sparkles className="w-4 h-4 text-primary" />
                             Biological Systems
@@ -235,21 +229,18 @@ export function Dashboard({
                     </div>
 
                     {/* Center - 3D model area */}
-                    <div className="flex-1 flex flex-col">
-                        {/* Bottom Panel - Mini Flower */}
-                        <div className="flex-1" />
-                        <div className="p-4 bg-black/40 backdrop-blur-md border-t border-white/5 pointer-events-auto">
-                            <div className="flex items-center justify-center">
-                                <SixPillarsFlower
-                                    pillars={pillars}
-                                    size={200}
-                                    showLabels={true}
-                                    showThreshold={false}
-                                    interactive={true}
-                                    onPillarClick={onPillarClick}
-                                />
-                            </div>
-                        </div>
+                    <div className="flex-1 flex items-center justify-center" />
+
+                    {/* Right Side - Mini Flower Chart */}
+                    <div className="w-80 h-full flex items-center justify-center p-4 bg-white/40 backdrop-blur-md border-l border-primary/20 pointer-events-auto">
+                        <SixPillarsFlower
+                            pillars={pillars}
+                            size={200}
+                            showLabels={true}
+                            showThreshold={false}
+                            interactive={true}
+                            onPillarClick={onPillarClick}
+                        />
                     </div>
                 </div>
             )}
