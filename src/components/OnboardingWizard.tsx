@@ -109,11 +109,11 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                 {/* Progress Bar */}
                 <div className="mb-8 px-4">
                     <div className="flex items-center justify-between relative">
-                        {/* Connecting Line */}
-                        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-white/10 -z-10" />
+                        {/* Connecting Line - positioned at center of circles (20px = half of 40px circle) */}
+                        <div className="absolute top-[20px] left-0 w-full h-0.5 bg-white/10 -translate-y-1/2" style={{ zIndex: -1 }} />
                         <div
-                            className="absolute top-1/2 left-0 h-0.5 bg-gradient-to-r from-primary to-secondary -z-10 transition-all duration-500"
-                            style={{ width: `${(currentStepIndex / (steps.length - 1)) * 100}%` }}
+                            className="absolute top-[20px] left-0 h-0.5 bg-gradient-to-r from-primary to-secondary transition-all duration-500 -translate-y-1/2"
+                            style={{ width: `${(currentStepIndex / (steps.length - 1)) * 100}%`, zIndex: -1 }}
                         />
 
                         {steps.map((step, index) => {
@@ -299,7 +299,8 @@ function BasicsStep({ userData, onChange, onNext }: BasicsStepProps) {
                             onChange={(e) => update('age', parseInt(e.target.value))}
                             className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer transition-all"
                             style={{
-                                accentColor: '#2F687D'
+                                accentColor: '#2F687D',
+                                background: '#5485ad'
                             }}
                         />
                     </div>
@@ -318,7 +319,8 @@ function BasicsStep({ userData, onChange, onNext }: BasicsStepProps) {
                             onChange={(e) => update('weight', parseInt(e.target.value))}
                             className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer transition-all"
                             style={{
-                                accentColor: '#2F687D'
+                                accentColor: '#2F687D',
+                                background: '#5485ad'
                             }}
                         />
                     </div>
@@ -337,7 +339,8 @@ function BasicsStep({ userData, onChange, onNext }: BasicsStepProps) {
                             onChange={(e) => update('height', parseInt(e.target.value))}
                             className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer transition-all"
                             style={{
-                                accentColor: '#2F687D'
+                                accentColor: '#2F687D',
+                                background: '#5485ad'
                             }}
                         />
                     </div>

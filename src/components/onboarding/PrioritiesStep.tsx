@@ -1,10 +1,9 @@
-import { useState } from 'react';
 import {
     Target, Zap, Brain, Heart, Moon,
     Scale, Shield, Activity, Check, Star,
-    ArrowRight
+    ArrowRight, Sparkles, Flame, Stethoscope, TrendingUp
 } from 'lucide-react';
-import { HEALTH_GOAL_OPTIONS, GoalCategory } from '../../types/HealthData';
+import { HEALTH_GOAL_OPTIONS } from '../../types/HealthData';
 
 interface PrioritiesStepProps {
     primaryGoals: string[];
@@ -15,15 +14,16 @@ interface PrioritiesStepProps {
     onBack: () => void;
 }
 
-const iconMap: Record<GoalCategory, React.ElementType> = {
-    longevity: Heart,
-    performance: Zap,
-    cognitive: Brain,
-    energy: Activity,
+// Map categories from HealthData.ts to icons
+const iconMap: Record<string, React.ElementType> = {
     sleep: Moon,
+    metabolic: TrendingUp,
+    mental: Brain,
+    cardiovascular: Heart,
     weight: Scale,
-    immunity: Shield,
-    stress: Star, // Fallback
+    inflammation: Flame,
+    chronic: Stethoscope,
+    resilience: Shield,
 };
 
 export function PrioritiesStep({
@@ -41,7 +41,6 @@ export function PrioritiesStep({
         } else {
             if (primaryGoals.length < 2) {
                 onChangePrimary([...primaryGoals, id]);
-                // Remove from secondary if present
                 if (secondaryGoals.includes(id)) {
                     onChangeSecondary(secondaryGoals.filter(g => g !== id));
                 }
@@ -50,7 +49,7 @@ export function PrioritiesStep({
     };
 
     const toggleSecondary = (id: string) => {
-        if (primaryGoals.includes(id)) return; // Can't be both
+        if (primaryGoals.includes(id)) return;
 
         if (secondaryGoals.includes(id)) {
             onChangeSecondary(secondaryGoals.filter(g => g !== id));
@@ -62,7 +61,7 @@ export function PrioritiesStep({
     return (
         <div className="space-y-8 animate-slide-up">
             <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-white mb-2">Define Your Mission</h2>
+                <h2 className="text-2xl font-bold text-gradient mb-2">Define Your Mission</h2>
                 <p className="text-foreground/60">
                     Select up to 2 <span className="text-primary font-bold">Primary Objectives</span>. Everything else is secondary.
                 </p>
@@ -80,58 +79,70 @@ export function PrioritiesStep({
                         <button
                             key={goal.id}
                             onClick={() => togglePrimary(goal.id)}
-                            disabled={isDisabled && !isSecondary} // Allow clicking if it's secondary to promote it? No, keep simple.
+                            disabled={isDisabled && !isSecondary}
                             className={`relative group p-6 rounded-2xl border text-left transition-all duration-300 overflow-hidden
                 ${isPrimary
-                                    ? 'bg-primary/10 border-primary shadow-[0_0_30px_rgba(6,182,212,0.2)]'
+                                    ? 'border-[#4b789b]/50 shadow-[0_0_40px_rgba(75,120,155,0.3)] scale-[1.02]'
                                     : isSecondary
-                                        ? 'bg-white/5 border-white/10 opacity-50 hover:opacity-100'
+                                        ? 'bg-white/5 border-[#4b789b]/30 hover:border-[#4b789b]/50'
                                         : isDisabled
-                                            ? 'bg-white/5 border-white/5 opacity-30 cursor-not-allowed'
+                                            ? 'bg-white/5 border-white/5 opacity-40 cursor-not-allowed'
                                             : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
                                 }`}
+                            style={isPrimary ? {
+                                background: 'linear-gradient(135deg, #3a6186 0%, #4b789b 50%, #5a8aad 100%)'
+                            } : undefined}
                         >
-                            {/* Background Gradient for Primary */}
+                            {/* Sparkle indicator for primary */}
                             {isPrimary && (
-                                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-transparent opacity-50" />
+                                <div className="absolute top-3 right-3">
+                                    <Sparkles className="w-5 h-5 text-white/70" />
+                                </div>
                             )}
 
                             <div className="relative z-10 flex items-start justify-between">
                                 <div className="flex items-center gap-4 mb-3">
-                                    <div className={`p-3 rounded-xl transition-colors
-                    ${isPrimary ? 'bg-primary text-background' : 'bg-white/10 text-foreground/70'}`}>
-                                        <Icon className="w-6 h-6" />
+                                    <div className={`p-3 rounded-xl transition-all shadow-lg`}
+                                        style={isPrimary
+                                            ? { background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)' }
+                                            : { background: 'linear-gradient(135deg, #3a6186 0%, #4b789b 100%)' }
+                                        }
+                                    >
+                                        <Icon className="w-6 h-6 text-white" />
                                     </div>
                                     {isPrimary && (
-                                        <span className="px-3 py-1 bg-primary text-background text-xs font-bold rounded-full animate-in zoom-in">
+                                        <span className="px-3 py-1 text-white text-xs font-bold rounded-full border border-white/30"
+                                            style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)' }}
+                                        >
                                             PRIMARY
                                         </span>
                                     )}
                                 </div>
-                                {isPrimary && <Check className="w-6 h-6 text-primary" />}
+                                {isPrimary && <Check className="w-6 h-6 text-white" />}
                             </div>
 
                             <div className="relative z-10">
                                 <h3 className={`text-lg font-bold mb-1 ${isPrimary ? 'text-white' : 'text-foreground'}`}>
-                                    {goal.label}
+                                    {goal.title}
                                 </h3>
-                                <p className="text-sm text-foreground/60 leading-relaxed">
+                                <p className={`text-sm leading-relaxed ${isPrimary ? 'text-white/80' : 'text-foreground/60'}`}>
                                     {goal.description}
                                 </p>
                             </div>
 
-                            {/* Hover Effect: Show details */}
-                            <div className={`mt-4 pt-4 border-t border-white/10 text-xs space-y-2 transition-all duration-300
-                ${isPrimary || (document.body.style.cursor === 'pointer') ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden group-hover:opacity-100 group-hover:h-auto'}`}>
-                                <div className="flex items-center gap-2 text-primary">
-                                    <ArrowRight className="w-3 h-3" />
-                                    <span>Signal: {goal.shortTermSignal}</span>
+                            {/* Details - always visible for primary */}
+                            {isPrimary && (
+                                <div className="mt-4 pt-4 border-t border-white/20 text-xs space-y-2">
+                                    <div className="flex items-center gap-2 text-white/90">
+                                        <ArrowRight className="w-3 h-3" />
+                                        <span>Signal: {goal.shortTermSignals?.[0] || ''}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-white/80">
+                                        <Star className="w-3 h-3" />
+                                        <span>Outcome: {goal.longTermOutcomes?.[0] || ''}</span>
+                                    </div>
                                 </div>
-                                <div className="flex items-center gap-2 text-secondary">
-                                    <Star className="w-3 h-3" />
-                                    <span>Outcome: {goal.longTermOutcome}</span>
-                                </div>
-                            </div>
+                            )}
                         </button>
                     );
                 })}
@@ -139,11 +150,14 @@ export function PrioritiesStep({
 
             {/* Secondary Goals Section */}
             {primaryGoals.length > 0 && (
-                <div className="glass-card p-6 animate-fade-in">
-                    <h3 className="text-sm font-bold text-foreground/50 uppercase tracking-wider mb-4">
+                <div className="glass-card p-6 animate-fade-in pointer-events-auto relative z-10">
+                    <h3 className="text-sm font-bold uppercase tracking-wider mb-4 flex items-center gap-2"
+                        style={{ color: '#4b789b' }}
+                    >
+                        <Star className="w-4 h-4" />
                         Secondary Objectives (Optional)
                     </h3>
-                    <div className="flex flex-wrap gap-3">
+                    <div className="flex flex-wrap gap-3 pointer-events-auto">
                         {HEALTH_GOAL_OPTIONS
                             .filter(g => !primaryGoals.includes(g.id))
                             .map(goal => {
@@ -152,14 +166,17 @@ export function PrioritiesStep({
                                     <button
                                         key={goal.id}
                                         onClick={() => toggleSecondary(goal.id)}
-                                        className={`px-4 py-2 rounded-full text-sm font-medium border transition-all
+                                        className={`px-4 py-2 rounded-full text-sm font-medium border transition-all cursor-pointer
                       ${isSelected
-                                                ? 'bg-secondary/20 border-secondary text-secondary shadow-[0_0_10px_rgba(99,102,241,0.2)]'
-                                                : 'bg-white/5 border-white/10 text-foreground/60 hover:bg-white/10 hover:text-foreground'
+                                                ? 'text-white border-white/30 shadow-[0_0_20px_rgba(75,120,155,0.4)]'
+                                                : 'bg-white/5 border-white/10 text-foreground/60 hover:bg-white/10 hover:text-foreground hover:border-white/20'
                                             }`}
+                                        style={isSelected ? {
+                                            background: 'linear-gradient(135deg, #3a6186 0%, #4b789b 100%)'
+                                        } : undefined}
                                     >
                                         {isSelected && <span className="mr-2">✓</span>}
-                                        {goal.label}
+                                        {goal.title}
                                     </button>
                                 );
                             })}
@@ -171,18 +188,21 @@ export function PrioritiesStep({
             <div className="flex gap-4 pt-4">
                 <button
                     onClick={onBack}
-                    className="flex-1 py-4 px-6 rounded-xl border border-white/10 text-foreground/70 hover:bg-white/5 transition-all font-medium"
+                    className="flex-1 py-4 px-6 rounded-xl border border-white/20 text-foreground/70 hover:bg-white/10 hover:border-white/30 transition-all font-medium"
                 >
                     Back
                 </button>
                 <button
                     onClick={onNext}
                     disabled={primaryGoals.length === 0}
-                    className={`flex-1 py-4 px-6 font-bold rounded-xl transition-all shadow-lg
+                    className={`flex-1 py-4 px-6 font-bold rounded-xl transition-all
             ${primaryGoals.length > 0
-                            ? 'bg-primary text-background hover:bg-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.3)]'
+                            ? 'text-white shadow-[0_0_30px_rgba(75,120,155,0.4)] hover:shadow-[0_0_40px_rgba(75,120,155,0.6)]'
                             : 'bg-white/5 text-foreground/30 cursor-not-allowed'
                         }`}
+                    style={primaryGoals.length > 0 ? {
+                        background: 'linear-gradient(135deg, #3a6186 0%, #4b789b 50%, #5a8aad 100%)'
+                    } : undefined}
                 >
                     Continue
                 </button>
